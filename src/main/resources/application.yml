@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.ddl-auto: none
+    show-sql: true
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/food_service
+    username: postgres
+    password: 123456
+  liquibase:
+    change-log: db/migration/master.yml
+    enabled: true

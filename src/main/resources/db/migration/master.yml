@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/v1/13.12.2021--create-user-and-catering.yml

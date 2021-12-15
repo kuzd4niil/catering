@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/v1/sql/clear_db.sql
+  - include:
+      file: db/migration/v1/sql/create_user.sql
+  - include:
+      file: db/migration/v1/sql/create_catering.sql
+  - include:
+      file: db/migration/v1/sql/add_users.sql
