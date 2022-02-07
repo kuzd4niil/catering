@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   jpa:
     properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -5,9 +7,13 @@ spring:
     show-sql: true
   datasource:
     driverClassName: org.postgresql.Driver
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/catering #${SPRING_DATASOURCE_URL}
+    username: postgres #${SPRING_DATASOURCE_USERNAME}
+    password: 123456 #${SPRING_DATASOURCE_PASSWORD}
   liquibase:
     change-log: db/migration/master.yml
     enabled: true
+jwt:
+  token:
+    secret: secret
+    expired: 600000

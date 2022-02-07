@@ -32,4 +32,23 @@ public enum ApplicationUserRole {
 
         return permissions;
     }
+
+    static public ApplicationUserRole stringToRole(String roleName) {
+        ApplicationUserRole applicationUserRole;
+        switch (roleName) {
+            case ("GUEST"):
+                applicationUserRole = GUEST;
+                break;
+            case ("USER"):
+                applicationUserRole = USER;
+                break;
+            case ("OWNER"):
+                applicationUserRole = OWNER;
+                break;
+            default:
+                applicationUserRole = ADMIN;
+        }
+
+        return applicationUserRole;
+    }
 }
