@@ -67,6 +67,11 @@ public class CateringController {
         fileUploaderService.uploadFile(file, principal);
     }
 
+    @PostMapping("{id}/make_an_order")
+    public void makeAnOrder(/*здесь что-то должно быть*/) {
+
+    }
+
     @PutMapping("{id}")
     public Catering updateCatering(@PathVariable(value = "id") Long cateringId, @RequestBody Catering catering, Principal principal) {
         return cateringService.updateCatering(cateringId, catering);
