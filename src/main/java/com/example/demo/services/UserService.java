@@ -1,5 +1,8 @@
 package com.example.demo.services;
 
+import com.example.demo.exception.UserWithThisEmailExists;
+import com.example.demo.exception.UserWithThisUsernameExists;
+import com.example.demo.models.Catering;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.security.ApplicationUserRole;
@@ -61,6 +64,10 @@ public class UserService implements UserDetailsService {
     }
 
     public void addUser(User user) {
+        if (userRepository.findByUsername(user.getUsername()) != null)
+            throw new UserWithThisUsernameExists("A user with this username exists");
+        if (userRepository.findByEmail(user.getEmail()) != null)
+            throw new UserWithThisEmailExists("A user with this email exists");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -93,7 +100,18 @@ public class UserService implements UserDetailsService {
                 mapRolesToAuthorities(user.getUserRole()));
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(ApplicationUserRole role) {
-        return role.getPermissions().stream().map(p -> new SimpleGrantedAuthority(p.name())).collect(Collectors.toList());
+    static public Collection<? extends GrantedAuthority> mapRolesToAuthorities(ApplicationUserRole role) {
+        return role.getPermissions().stream().map(p -> new SimpleGrantedAuthority(p.getPermission())).collect(Collectors.toList());
+    }
+
+    public User registerNewUser(User user) {
+        if (userRepository.findByUsername(user.getUsername()) != null)
+            throw new UserWithThisUsernameExists("A user with this username exists");
+        if (userRepository.findByEmail(user.getEmail()) != null)
+            throw new UserWithThisEmailExists("A user with this email exists");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setUserRole(ApplicationUserRole.USER);
+        user.setCaterings(new ArrayList<Catering>());
+        return userRepository.save(user);
     }
 }

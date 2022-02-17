@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.6.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id "org.liquibase.gradle" version "2.1.1"
 }
 
 group = 'com.example'
@@ -28,6 +29,8 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'org.springframework.boot:spring-boot-devtools:2.6.3'
 	implementation 'com.auth0:java-jwt:3.18.3'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+	implementation 'com.google.code.gson:gson:2.9.0'
 }
 
 test {

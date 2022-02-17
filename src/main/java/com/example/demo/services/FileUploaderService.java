@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class FileUploaderService {
         this.userRepository = userRepository;
     }
 
-    public void uploadFile(MultipartFile file, Principal principal) throws IOException {
+    public List<Catering> uploadFile(MultipartFile file, Principal principal) throws IOException {
 
         User user = userRepository.findByUsername(principal.getName());
 
@@ -54,6 +55,7 @@ public class FileUploaderService {
         Sheet sheet = workbook.getSheetAt(0);
 
         Catering catering;
+        List<Catering> list = new ArrayList<>();
         for (Row row : sheet) {
             int i = 0;
             catering = new Catering();
@@ -66,10 +68,13 @@ public class FileUploaderService {
                 ++i;
             }
             catering.setOwner(user);
+            list.add(catering);
             cateringRepository.save(catering);
         }
 
         excelFile.close();
         fileOfList.delete();
+
+        return list;
     }
 }

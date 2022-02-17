@@ -2,6 +2,7 @@ package com.example.demo.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.demo.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,11 +28,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
     private final String secret = "secret";
     private final Long expiredTime = (long)600000;
 
-    public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public CustomAuthenticationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -44,13 +47,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        User user = (User)authentication.getPrincipal();
+        com.example.demo.models.User user = userRepository.findByUsername(((User)authentication.getPrincipal()).getUsername());
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expiredTime))
                 .withIssuer(request.getRequestURL().toString())
-                .withClaim("role", user.getAuthorities().toString())
+                .withClaim("role", user.getUserRole().name())
                 .sign(algorithm);
         String refresh_token = JWT.create()
                 .withSubject(user.getUsername())

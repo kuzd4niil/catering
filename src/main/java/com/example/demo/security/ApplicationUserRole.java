@@ -36,13 +36,13 @@ public enum ApplicationUserRole {
     static public ApplicationUserRole stringToRole(String roleName) {
         ApplicationUserRole applicationUserRole;
         switch (roleName) {
-            case ("GUEST"):
+            case ("\"GUEST\""):
                 applicationUserRole = GUEST;
                 break;
-            case ("USER"):
+            case ("\"USER\""):
                 applicationUserRole = USER;
                 break;
-            case ("OWNER"):
+            case ("\"OWNER\""):
                 applicationUserRole = OWNER;
                 break;
             default:

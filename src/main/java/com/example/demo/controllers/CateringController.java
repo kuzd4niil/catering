@@ -1,8 +1,14 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Catering;
+import com.example.demo.models.Reserve;
 import com.example.demo.services.CateringService;
 import com.example.demo.services.FileUploaderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +33,12 @@ public class CateringController {
         this.fileUploaderService = fileUploaderService;
     }
 
+    @Operation(summary = "Get all caterings without sorting and paging")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get all users",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = Catering.class))})
+    })
     @GetMapping("all")
     public ResponseEntity<List<Catering>> getAll() {
         List<Catering> cateringList = cateringService.getAll();
@@ -36,6 +48,11 @@ public class CateringController {
         return responseEntity;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get several caterings",
+                    content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Catering.class))})
+    })
     @GetMapping("page/{numberPage}")
     public List<Catering> getCaterings(@PathVariable(name = "numberPage") Integer numberPage,
                                              @RequestParam(name = "pageSize", required = true) Short pageSize,
@@ -50,35 +67,83 @@ public class CateringController {
         );
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get one catering",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = Catering.class))}),
+            @ApiResponse(responseCode = "404", description = "Catering not found",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = Catering.class))})
+    })
     @GetMapping("{id}")
-    public Catering getCatering(@PathVariable(value = "id") Long id) {
-        Catering catering = cateringService.getCatering(id);
-        return catering;
+    public ResponseEntity<Catering> getCatering(@PathVariable(value = "id") Long id) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity responseEntity = new ResponseEntity(cateringService.getCatering(id), responseHeaders, HttpStatus.OK);
+        return responseEntity;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Add catering",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = Catering.class))}),
+            @ApiResponse(responseCode = "400", description = "Catering already exist",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = Catering.class))})
+    })
     @PostMapping
-    @PreAuthorize("hasAuthority('MODIFY_CATERING')")
-    public void addCatering(@RequestBody Catering catering, Principal principal) {
-        cateringService.addCatering(catering, principal);
+    public ResponseEntity<Catering> addCatering(@RequestBody Catering catering, Principal principal) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity responseEntity = new ResponseEntity(cateringService.addCatering(catering, principal), responseHeaders, HttpStatus.OK);
+        return responseEntity;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Add Excel file with list of caterings",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = Catering.class))})
+    })
     @PostMapping("addexcel")
-    public void addFile(@RequestParam("file")MultipartFile file, Principal principal) throws IOException {
-        fileUploaderService.uploadFile(file, principal);
+    public ResponseEntity<List<Catering>> addFile(@RequestParam("file")MultipartFile file, Principal principal) throws IOException {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity<List<Catering>> responseEntity = new ResponseEntity(fileUploaderService.uploadFile(file, principal), responseHeaders, HttpStatus.CREATED);
+        return responseEntity;
     }
 
-    @PostMapping("{id}/make_an_order")
-    public void makeAnOrder(/*здесь что-то должно быть*/) {
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Make order",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Reserve.class))})
+    })
+    @PostMapping("{id}/reserve")
+    public ResponseEntity<Reserve> reserve(@PathVariable(value = "id") Long cateringId, Principal principal) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity<Reserve> responseEntity = new ResponseEntity(cateringService.reserve(cateringId, principal), responseHeaders, HttpStatus.CREATED);
+        return responseEntity;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Editing catering",
+            content = {@Content(mediaType = "application/json",
+            schema = @Schema(implementation = Catering.class))})
+    })
     @PutMapping("{id}")
-    public Catering updateCatering(@PathVariable(value = "id") Long cateringId, @RequestBody Catering catering, Principal principal) {
-        return cateringService.updateCatering(cateringId, catering);
+    public ResponseEntity<Catering> updateCatering(@PathVariable(value = "id") Long cateringId, @RequestBody Catering catering, Principal principal) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_JSON);
+        ResponseEntity<Catering> responseEntity = new ResponseEntity(cateringService.updateCatering(cateringId, catering), responseHeaders, HttpStatus.ACCEPTED);
+        return responseEntity;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Remove catering")
+    })
     @DeleteMapping("{id}")
-    public void removeCatering(@PathVariable(value = "id") Long id, Principal principal) {
+    public ResponseEntity removeCatering(@PathVariable(value = "id") Long id, Principal principal) {
         cateringService.removeCatering(id);
+        return ResponseEntity.accepted().build();
     }
 }

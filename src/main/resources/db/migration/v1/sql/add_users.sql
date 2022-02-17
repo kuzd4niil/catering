@@ -16,4 +16,5 @@ values (
     ,'$2a$10$nPbVc.mAhpZujUhVx9BY9O7L96xt6fwFlIz5/lIfBsGByXFZ.34Li'
     ,1
 );
---rollback
+--rollback DELETE FROM users WHERE username=dan
+--rollback DELETE FROM users WHERE username=max

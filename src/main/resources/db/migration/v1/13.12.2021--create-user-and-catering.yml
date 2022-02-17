@@ -7,3 +7,7 @@ databaseChangeLog:
       file: db/migration/v1/sql/create_catering.sql
   - include:
       file: db/migration/v1/sql/add_users.sql
+  - include:
+      file: db/migration/v1/sql/create_reserve.sql
+  - include:
+      file: db/migration/v1/sql/add_caterings.sql

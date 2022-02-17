@@ -2,6 +2,7 @@ package com.example.demo.models;
 
 import com.example.demo.security.ApplicationUserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
 import java.io.Serializable;

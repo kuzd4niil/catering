@@ -1,9 +1,7 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.Catering;
 import com.example.demo.models.User;
 import com.example.demo.services.UserService;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +10,7 @@ import java.util.List;
 @RequestMapping("api/users")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     UserController(UserService userService) {
         this.userService = userService;
@@ -25,9 +23,9 @@ public class UserController {
 
     @GetMapping("page/{numberPage}")
     public List<User> getCaterings(@PathVariable(name = "numberPage") Integer numberPage,
-                                       @RequestParam(name = "pageSize", required = true) Short pageSize,
-                                       @RequestParam(name = "sortDirection", required = true) Short sortDirection,
-                                       @RequestParam(name = "sortBy", required = true) String sortBy
+                                       @RequestParam(name = "pageSize", defaultValue = "1") Short pageSize,
+                                       @RequestParam(name = "sortDirection", defaultValue = "1") Short sortDirection,
+                                       @RequestParam(name = "sortBy", defaultValue = "name") String sortBy
     ) {
         return userService.getUsers(
                 numberPage,

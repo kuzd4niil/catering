@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.exception.CateringAlreadyExist;
 import com.example.demo.models.Catering;
+import com.example.demo.models.Reserve;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CateringRepository;
 import com.example.demo.repositories.UserRepository;
@@ -17,8 +18,8 @@ import java.util.List;
 @Service
 public class CateringService {
 
-    private CateringRepository cateringRepository;
-    private UserRepository userRepository;
+    private final CateringRepository cateringRepository;
+    private final UserRepository userRepository;
 
     public CateringService(CateringRepository cateringRepository, UserRepository userRepository) {
         this.cateringRepository = cateringRepository;
@@ -58,6 +59,12 @@ public class CateringService {
         return cateringRepository.save(catering);
     }
 
+    public Reserve reserve(Long cateringId, Principal principal) {
+        Reserve reserve = new Reserve();
+        //...
+        return reserve;
+    }
+
     public void removeCatering(Long id) {
         cateringRepository.deleteById(id);
     }
@@ -75,8 +82,7 @@ public class CateringService {
     }
 
     public Catering getCatering(Long id) {
-        Catering catering = cateringRepository.findById(id).get();
-        return catering;
+        return cateringRepository.findById(id).get();
     }
 
     public List<Catering> getAll() {

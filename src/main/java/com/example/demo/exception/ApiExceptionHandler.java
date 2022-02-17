@@ -15,7 +15,7 @@ public class ApiExceptionHandler {
     static final ZonedDateTime timestamp = ZonedDateTime.now(ZoneId.of("Europe/Moscow"));
 
     @ExceptionHandler(value = CateringAlreadyExist.class)
-    public ResponseEntity<Object> handleCateringAlreadyExistException(IOException e) {
+    public ResponseEntity<Object> handleCateringAlreadyExistException(CateringAlreadyExist e) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
@@ -27,25 +27,34 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, badRequest);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @ExceptionHandler(value = IOException.class)
     public ResponseEntity<Object> handleIOException(IOException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                timestamp
+        );
+
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = UserWithThisEmailExists.class)
+    public ResponseEntity<Object> handlerUserWithThisEmailExists(UserWithThisEmailExists e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                timestamp
+        );
+
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = UserWithThisUsernameExists.class)
+    public ResponseEntity<Object> handlerUserWithThisUsernameExists(UserWithThisUsernameExists e) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
