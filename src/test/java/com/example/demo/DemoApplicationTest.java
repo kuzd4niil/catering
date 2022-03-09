@@ -54,8 +54,9 @@ public class DemoApplicationTest {
     }
 
     @Test
-    @DisplayName("Checking custom exception: UserWithThisEmailExists & UserWithThisUsernameExists")
+    @DisplayName("Checking custom exception: UserWithThisEmailExists & UserWithThisUsernameExists. And check authorities")
     public void testCustomException() throws Exception {
+        // The new user to be added to the database
         User user = new User();
         user.setEmail("nik@gmail.com");
         user.setPassword("500");
@@ -63,24 +64,32 @@ public class DemoApplicationTest {
         user.setUserRole(ApplicationUserRole.USER);
         user.setCaterings(new ArrayList<Catering>());
 
+        // Login as 'dan' which is 'ADMIN'
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("username", "dan")
                 .param("password", "1000"))
                 .andExpect(status().isOk()).andReturn();
 
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-
+        // Extract token from response which was get by login
         JsonObject jsonObject = (JsonObject) JsonParser.parseString(result.getResponse().getContentAsString());
         String token = jsonObject.get("access_token").getAsString();
 
+        // Convert user to JSON string to add in body of request
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        // Try to add new user. For first time request must succeed
         mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isOk()).andReturn();
 
+        /**
+         * Try to add the same user for second time. we must get response with error
+         * caused custom Exception 'UserWithThisUsernameExists'
+          */
         result = mockMvc.perform(MockMvcRequestBuilders.post("/api/users")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -92,6 +101,10 @@ public class DemoApplicationTest {
 
         assertEquals("A user with this username exists", exceptionMessage);
 
+        /**
+         * Change username for to check other custom exception
+         * 'UserWithThisEmailExists'
+         */
         user.setUsername("nik2");
         json = gson.toJson(user);
 
@@ -106,6 +119,7 @@ public class DemoApplicationTest {
 
         assertEquals("A user with this email exists", exceptionMessage);
 
+        // Check authorities of role 'USER'
         result = mockMvc.perform(MockMvcRequestBuilders.post("/api/login")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("username", "nik")

@@ -25,7 +25,6 @@ public class MainController {
     public ResponseEntity<User> register(@RequestBody User user) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.APPLICATION_JSON);
-        ResponseEntity responseEntity = new ResponseEntity(userService.registerNewUser(user), responseHeaders, HttpStatus.OK);
-        return responseEntity;
+        return new ResponseEntity(userService.registerNewUser(user), responseHeaders, HttpStatus.OK);
     }
 }

@@ -48,6 +48,7 @@ public class CateringController {
         return responseEntity;
     }
 
+    @Operation(summary = "get several caterings")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get several caterings",
                     content = {@Content(mediaType = "application/json",
@@ -67,6 +68,7 @@ public class CateringController {
         );
     }
 
+    @Operation(summary = "Get catering by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Get one catering",
             content = {@Content(mediaType = "application/json",
@@ -83,6 +85,7 @@ public class CateringController {
         return responseEntity;
     }
 
+    @Operation(summary = "Add catering")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Add catering",
             content = {@Content(mediaType = "application/json",
@@ -99,6 +102,7 @@ public class CateringController {
         return responseEntity;
     }
 
+    @Operation(summary = "Add caterings by Excel file")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Add Excel file with list of caterings",
             content = {@Content(mediaType = "application/json",
@@ -112,6 +116,7 @@ public class CateringController {
         return responseEntity;
     }
 
+    @Operation(summary = "Do reserve in a catering")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Make order",
                     content = {@Content(mediaType = "application/json",
@@ -125,6 +130,7 @@ public class CateringController {
         return responseEntity;
     }
 
+    @Operation(summary = "Update catering")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Editing catering",
             content = {@Content(mediaType = "application/json",
@@ -138,6 +144,7 @@ public class CateringController {
         return responseEntity;
     }
 
+    @Operation(summary = "Delete catering")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Remove catering")
     })
