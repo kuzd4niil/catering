@@ -11,7 +11,7 @@ services:
     restart: always
 
   app:
-    image: 'kuzd4niil/demo_tomcat:v1'
+    image: 'kuzd4niil/demo_tomcat:v2'
     container_name: 'java-app'
     environment:
       - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/catering'
