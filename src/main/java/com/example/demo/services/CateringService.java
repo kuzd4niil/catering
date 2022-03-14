@@ -5,6 +5,7 @@ import com.example.demo.models.Catering;
 import com.example.demo.models.Reserve;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CateringRepository;
+import com.example.demo.repositories.ReserveRepository;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +21,12 @@ public class CateringService {
 
     private final CateringRepository cateringRepository;
     private final UserRepository userRepository;
+    private final ReserveRepository reserveRepository;
 
-    public CateringService(CateringRepository cateringRepository, UserRepository userRepository) {
+    public CateringService(CateringRepository cateringRepository, UserRepository userRepository, ReserveRepository reserveRepository) {
         this.cateringRepository = cateringRepository;
         this.userRepository = userRepository;
+        this.reserveRepository = reserveRepository;
     }
 
     public List<Catering> getCaterings(
@@ -61,8 +64,17 @@ public class CateringService {
 
     public Reserve reserve(Long cateringId, Principal principal) {
         Reserve reserve = new Reserve();
-        //...
-        return reserve;
+
+        Catering catering = cateringRepository.findById(cateringId).get();
+
+        String username = principal.getName();
+        User user = userRepository.findByUsername(username);
+
+        reserve.setActive(1);
+        reserve.setCatering(catering);
+        reserve.setUser(user);
+
+        return reserveRepository.save(reserve);
     }
 
     public void removeCatering(Long id) {

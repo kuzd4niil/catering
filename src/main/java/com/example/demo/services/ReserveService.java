@@ -19,7 +19,6 @@ public class ReserveService {
     public List<Reserve> getAll() {
         List<Reserve> list = new ArrayList<>();
         reserveRepository.findAll().forEach(list::add);
-
         return list;
     }
 }

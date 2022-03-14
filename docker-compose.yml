@@ -8,9 +8,10 @@ services:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_HOST_AUTH_METHOD=trust'
       - 'POSTGRES_DB=catering'
+    restart: always
 
   app:
-    build: ./
+    image: 'kuzd4niil/demo_tomcat:v1'
     container_name: 'java-app'
     environment:
       - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/catering'
@@ -18,3 +19,6 @@ services:
       - 'SPRING_DATASOURCE_PASSWORD=123456'
     ports:
       - 8080:8080
+    depends_on:
+      - postgres
+    restart: always

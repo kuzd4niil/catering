@@ -102,11 +102,12 @@ public class CateringController {
         return responseEntity;
     }
 
-    @Operation(summary = "Add caterings by Excel file")
+    @Operation(summary = "Add caterings by Excel file through multipart file in body of request. 1 row - 1 catering. \"A\" column - name, \"B\" column - address, \"C\" column - email")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Add Excel file with list of caterings",
-            content = {@Content(mediaType = "application/json",
-            schema = @Schema(implementation = Catering.class))})
+            @ApiResponse(responseCode = "201", description = "Add list of caterings from Excel file"
+//            content = {@Content(mediaType = "application/json",
+//            schema = @Schema(implementation = Catering.class))}
+            )
     })
     @PostMapping("addexcel")
     public ResponseEntity<List<Catering>> addFile(@RequestParam("file")MultipartFile file, Principal principal) throws IOException {

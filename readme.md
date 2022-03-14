@@ -4,7 +4,7 @@
 
 ## Сборка и запуск приложения (Linux)
 ```
-$ ./gradlew assemble && docker-compose -f docker-compose.yml up -d
+$ docker-compose -f docker-compose.yml up -d
 ```
 По адресу [https://localhost:8080/v3/api-docs](https://localhost:8080/v3/api-docs) доступна документация в JSON формате для импорта Postman, Insomnia или т.п.
 
@@ -16,3 +16,8 @@ url: ${SPRING_DATASOURCE_URL} -> url: "своя базу данных"
 username: ${SPRING_DATASOURCE_USERNAME} -> username: "свой пользователь"
 password: ${SPRING_DATASOURCE_PASSWORD} -> password: "свой пароль к пользователю"
 ```
+#### По умолчанию добавлены 2 пользователя в базу:
+| username | password | userRole |
+| -------- | -------- | -------- |
+|    dan   |   1000   |   ADMIN  |
+|    max   |   2000   |   USER   |

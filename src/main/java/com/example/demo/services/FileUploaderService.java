@@ -39,14 +39,14 @@ public class FileUploaderService {
 
         String currentPath = new java.io.File(".").getCanonicalPath();
 
-        File theDir = new File(currentPath + "\\files\\");
+        File theDir = new File(currentPath + "/files/");
         if (!theDir.exists()) {
             theDir.mkdir();
         }
 
-        file.transferTo(Paths.get(currentPath + "\\files\\", file.getOriginalFilename()));
+        file.transferTo(Paths.get(currentPath + "/files/", file.getOriginalFilename()));
 
-        File fileOfList = new File(currentPath + "\\files\\" + file.getOriginalFilename());
+        File fileOfList = new File(currentPath + "/files/" + file.getOriginalFilename());
 
         FileInputStream excelFile = new FileInputStream(fileOfList);
 

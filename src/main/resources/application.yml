@@ -7,14 +7,10 @@ spring:
     driverClassName: org.postgresql.Driver
     url: ${SPRING_DATASOURCE_URL} # jdbc:postgresql://localhost:5432/catering
     username: ${SPRING_DATASOURCE_USERNAME} # postgres
-    password: ${SPRING_DATASOURCE_PASSWORD} #123456
+    password: ${SPRING_DATASOURCE_PASSWORD} # 123456
   liquibase:
     change-log: db/migration/master.yml
     enabled: true
-jwt:
-  token:
-    secret: secret
-    expired: 600000
 
 # HTTPS
 server:

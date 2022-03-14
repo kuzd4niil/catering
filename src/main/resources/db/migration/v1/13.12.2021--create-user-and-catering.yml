@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/migration/v1/sql/create_reserve.sql
   - include:
       file: db/migration/v1/sql/add_caterings.sql
+  - include:
+      file: db/migration/v1/sql/add_active_column_to_users.sql

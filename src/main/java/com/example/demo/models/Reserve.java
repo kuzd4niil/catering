@@ -27,10 +27,44 @@ public class Reserve implements Serializable {
     private Long id;
 
     @OneToOne
-    @PrimaryKeyJoinColumn
+//    @PrimaryKeyJoinColumn
     private User user;
 
     @OneToOne
-    @PrimaryKeyJoinColumn
+//    @PrimaryKeyJoinColumn
     private Catering catering;
+
+    @Column(
+            name = "is_active",
+            nullable = false
+    )
+    private Integer active;
+
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Catering getCatering() {
+        return catering;
+    }
+
+    public void setCatering(Catering catering) {
+        this.catering = catering;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
 }

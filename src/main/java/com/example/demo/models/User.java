@@ -67,6 +67,12 @@ public class User implements Serializable {
 //    @JsonIgnore
     private List<Catering> caterings = new ArrayList<>();
 
+    @Column(
+        name = "is_active"
+        ,nullable = false
+    )
+    private Integer isActive;
+
     // GETTER AND SETTER
     public Long getId() {
         return id;
@@ -110,5 +116,13 @@ public class User implements Serializable {
 
     public void setCaterings(List<Catering> caterings) {
         this.caterings = caterings;
+    }
+
+    public Integer getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Integer isActive) {
+        this.isActive = isActive;
     }
 }

@@ -4,6 +4,7 @@ create table reserve(
     id bigint primary key,
     user_id bigint not null,
     catering_id bigint not null,
+    is_active int not null default (1),
     foreign key (user_id) references users(id),
     foreign key (catering_id) references catering(id)
 );
